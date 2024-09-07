@@ -3,17 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Budget</title>
-    <meta name="description" content="A free personal budger app">
-    <meta name="keywords" content="app free budget finance">
+    
+    <!-- This is an SEO Change: Updated title with long-tail keywords -->
+    <title>Innovative Free Personal Budget Management App</title>
+
+    <!-- This is an SEO Change: Optimized the meta description for long-tail keywords -->
+    <meta name="description" content="This is an innovative and free personal budget management app to help users track their spending, stay on budget, and meet financial goals.">
+
+    <!-- This is an SEO Change: Added Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "App Webpage",
+      "name": "Personal Budget Management App",
+      "description": "A free app that helps its users to track their spending and also manage their personal budget.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Personal Budget App"
+      }
+    }
+    </script>
+    <!-- This is an SEO Change: Added more specific keywords -->
+    <meta name="keywords" content="app free budget finance, personal budget management, finance tracking">
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
 
-<a href="#main" class="skip">Skip to content</a>
+    <!-- This is an A11y Change: Added an aria label for accessability -->
+    <a href="#main" class="skip" aria-label="Skip to main content">Skip to content</a>
 
-    <nav>
+
+    <!-- This is an A11y Change: Added an aria label for accessability -->
+    <nav aria-label="Main site navigation">
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/about.html">About</a></li>
@@ -22,14 +44,16 @@
         </ul>
     </nav>
 
-    <div class="hero">
+    <!-- This is a Semantic HTML Change: Replaced div with section for hero content -->
+    <section class="hero">
         <h1>Personal Budget</h1>
         <h2>A personal-budget management app</h2>
-    </div>
+    </section>
 
     <main class="center" id="main">
 
-        <div class="page-area">
+        <!-- This is a Semantic HTML Change: Replaced the div with section for the class page-area -->
+        <section class="page-area">
 
             <article>
                 <h1>Stay on track</h1>
@@ -51,7 +75,7 @@
                 <h1>Results</h1>
                 <p>
                     People who stick to a financial plan, budgeting every expense, get out of debt faster!
-                    Also, they to live happier lives... since they expend without guilt or fear... 
+                    Also, they live happier lives... since they expend without guilt or fear... 
                     because they know it is all good and accounted for.
                 </p>
             </article>
@@ -83,27 +107,30 @@
                 <h1>Results</h1>
                 <p>
                     People who stick to a financial plan, budgeting every expense, get out of debt faster!
-                    Also, they to live happier lives... since they expend without guilt or fear... 
+                    Also, they live happier lives... since they expend without guilt or fear... 
                     because they know it is all good and accounted for.
                 </p>
             </article>
     
-            <article>
+            <!-- This is a Semantic HTML Change: Replaced div with figure for chart content, and added figcaption with styling -->
+            <figure>
                 <h1>Chart</h1>
                 <p>
-                    <canvas id="myChart" width="400" height="400"></canvas>
+                    <!-- This is an A11y Change: aria-live is added for dynamic content updates -->
+                    <canvas id="myChart" width="400" height="400" aria-live="polite"></canvas>
                 </p>
-            </article>
+                <figcaption>Spending chart based on your personal budget data.</figcaption>
+            </figure>
 
-        </div>
+        </section>
 
     </main>
-
-    <footer class="bottom">
-        <div class="center">
+        <!-- This is a Semantic HTML Change: Removed unnecessary div, and replaced it with footer with the center class -->
+         <!-- This is also an A11y Change: Added role="contentinfo" for better screen reader support -->
+        <footer class="center" role="contentinfo">
             All rights reserved &copy; Fabio Nolasco
-        </div>
-    </footer>
+        </footer> 
+  
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
