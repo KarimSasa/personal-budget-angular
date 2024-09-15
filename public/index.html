@@ -122,6 +122,17 @@
                 <figcaption>Spending chart based on your personal budget data.</figcaption>
             </figure>
 
+            <figure>
+                <h1>D3JS Chart</h1>
+                <p>
+                    <div class="d3-chart-container">
+                    <!-- This is an A11y Change: aria-live is added for dynamic content updates -->
+                    <svg id="d3Chart" width="960" height="500" aria-live="polite"></svg>
+                    </div>
+                </p>
+                <figcaption>Spending D3JS chart based on your personal budget data.</figcaption>
+            </figure>
+
         </section>
 
     </main>
@@ -174,5 +185,156 @@
         getBudget();
     </script>
 
+<!-- D3.js Script -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+        d3.json('http://localhost:3000/budget').then(function(data) {
+        createD3Chart(data.myBudget);
+
+        const container = document.querySelector(".d3-chart-container");
+        const resizeObserver = new ResizeObserver(() => {
+            d3.select("#d3Chart").selectAll("*").remove();
+            createD3Chart(data.myBudget);
+        });
+
+        resizeObserver.observe(container);
+    });
+
+    function createD3Chart(data) {
+        const container = d3.select(".d3-chart-container");
+        const containerWidth = container.node().getBoundingClientRect().width;
+        const containerHeight = container.node().getBoundingClientRect().height;
+        const radius = Math.min(containerWidth, containerHeight) / 2;
+
+        var svg = d3.select("#d3Chart")
+            .attr("width", containerWidth)
+            .attr("height", containerHeight)
+            .append("g")
+
+        svg.append("g")
+            .attr("class", "slices");
+        svg.append("g")
+            .attr("class", "labels");
+        svg.append("g")
+            .attr("class", "lines");
+
+        var pie = d3.pie()
+            .sort(null)
+            .value(function(d) {
+                return d.budget; 
+            });
+
+        var arc = d3.arc()
+            .outerRadius(radius * 0.8)
+            .innerRadius(radius * 0.4);
+
+        var outerArc = d3.arc()
+            .innerRadius(radius * 0.9)
+            .outerRadius(radius * 0.9);
+            
+        svg.attr("transform", "translate(" + containerWidth / 2 + "," + containerHeight / 2 + ")");
+
+        var key = function(d){ return d.data.title; };
+
+        var color = d3.scaleOrdinal()
+            .domain(data.map(function(d) { return d.title; }))
+            .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+        change(data);
+
+        function change(data) {
+            /* ------- PIE SLICES -------*/
+            var slice = svg.select(".slices").selectAll("path.slice")
+                .data(pie(data), key);
+
+            slice.exit().remove();
+
+            slice = slice.enter()
+                .append("path")
+                .attr("class", "slice")
+                .style("fill", function(d) { return color(d.data.title); })
+                .each(function(d) {
+                    this._current = {startAngle: d.startAngle, endAngle: d.startAngle};
+                })
+                .merge(slice);
+
+            slice.transition().duration(1000)
+                .attrTween("d", function(d) {
+                    var interpolate = d3.interpolate(this._current, d);
+                    this._current = interpolate(1);
+                    return function(t) {
+                        return arc(interpolate(t));
+                    };
+                });
+
+            /* ------- TEXT LABELS -------*/
+            var text = svg.select(".labels").selectAll("text")
+                .data(pie(data), key);
+
+            text.exit().remove();
+
+            text = text.enter()
+                .append("text")
+                .attr("dy", ".35em")
+                .each(function(d) {
+                    this._current = {startAngle: d.startAngle, endAngle: d.startAngle};
+                })
+                .merge(text);
+
+            text.text(function(d) {
+                    return d.data.title;
+                })
+                .transition().duration(1000)
+                .attrTween("transform", function(d) {
+                    var interpolate = d3.interpolate(this._current, d);
+                    this._current = interpolate(1);
+                    return function(t) {
+                        var d2 = interpolate(t);
+                        var pos = outerArc.centroid(d2);
+                        pos[0] = radius * 1.1 * (midAngle(d2) < Math.PI ? 1 : -1);
+                        return "translate("+ pos +")";
+                    };
+                })
+                .styleTween("text-anchor", function(d){
+                    var interpolate = d3.interpolate(this._current, d);
+                    this._current = interpolate(1);
+                    return function(t) {
+                        var d2 = interpolate(t);
+                        return midAngle(d2) < Math.PI ? "start" : "end";
+                    };
+                });
+            
+            /* ------- SLICE TO TEXT POLYLINES -------*/
+            var polyline = svg.select(".lines").selectAll("polyline")
+                .data(pie(data), key);
+
+            polyline.exit().remove();
+
+            polyline = polyline.enter()
+                .append("polyline")
+                .each(function(d) {
+                    this._current = {startAngle: d.startAngle, endAngle: d.startAngle};
+                })
+                .merge(polyline);
+
+            polyline.transition().duration(1000)
+                .attrTween("points", function(d){
+                    var interpolate = d3.interpolate(this._current, d);
+                    this._current = interpolate(1);
+                    return function(t) {
+                        var d2 = interpolate(t);
+                        var pos = outerArc.centroid(d2);
+                        pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+                        return [arc.centroid(d2), outerArc.centroid(d2), pos];
+                    };
+                });
+        }
+
+        function midAngle(d){
+            return d.startAngle + (d.endAngle - d.startAngle) / 2;
+        }
+    };
+
+</script>
 </body>
 </html>
