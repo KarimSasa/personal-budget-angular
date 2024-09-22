@@ -53,7 +53,6 @@ export class HomepageComponent implements AfterViewInit {
   createD3Chart(data: any[]): void {
     const container = d3.select(this.elementRef.nativeElement).select('.d3-chart-container');
   
-    // Remove any existing SVG within the container to prevent duplicates
     container.select('svg').remove();
   
     const containerNode = container.node() as HTMLElement;
@@ -63,7 +62,6 @@ export class HomepageComponent implements AfterViewInit {
       const containerHeight = containerNode.getBoundingClientRect().height;
       const radius = Math.min(containerWidth, containerHeight) / 2;
   
-      // Append the SVG to the d3-chart-container instead of elementRef directly
       const svg = container
         .append('svg')
         .attr('id', 'd3Chart')
@@ -124,7 +122,7 @@ export class HomepageComponent implements AfterViewInit {
       .append('path')
       .attr('class', 'slice')
       .style('fill', (d: any) => color(d.data.title))
-      .each(function (this: any, d: any) { // Fix for 'this' context
+      .each(function (this: any, d: any) { 
         this._current = { startAngle: d.startAngle, endAngle: d.startAngle };
       })
       .merge(slice);
@@ -132,7 +130,7 @@ export class HomepageComponent implements AfterViewInit {
     slice
       .transition()
       .duration(1000)
-      .attrTween('d', function (this: any, d: any) { // Fix for 'this' context
+      .attrTween('d', function (this: any, d: any) {
         const interpolate = d3.interpolate(this._current, d);
         this._current = interpolate(1);
         return (t: any) => arc(interpolate(t));
@@ -147,7 +145,7 @@ export class HomepageComponent implements AfterViewInit {
       .enter()
       .append('text')
       .attr('dy', '.35em')
-      .each(function (this: any, d: any) { // Fix for 'this' context
+      .each(function (this: any, d: any) { 
         this._current = { startAngle: d.startAngle, endAngle: d.startAngle };
       })
       .merge(text);
@@ -191,7 +189,7 @@ export class HomepageComponent implements AfterViewInit {
     polyline
       .transition()
       .duration(1000)
-      .attrTween('points', function (this: any, d: any) { // Fix for 'this' context
+      .attrTween('points', function (this: any, d: any) {
         const interpolate = d3.interpolate(this._current, d);
         this._current = interpolate(1);
         return (t: any) => {
