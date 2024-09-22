@@ -2,7 +2,7 @@
 
     <!-- This is a Semantic HTML Change: Replaced the div with section for the class page-area -->
     <section class="page-area">
-
+      <pb-breadcrumbs></pb-breadcrumbs>
         <pb-article>
             <h1>Stay on track</h1>
             <p>
@@ -62,18 +62,18 @@
         </pb-article>
 
         <!-- This is a Semantic HTML Change: Replaced div with figure for chart content, and added figcaption with styling -->
-        <article>
+        <article class = "full-width-article">
             <figure>
             <h1>Chart</h1>
             <p>
                 <!-- This is an A11y Change: aria-live is added for dynamic content updates -->
-                <canvas id="myChart" width="400" height="400" aria-live="polite"></canvas>
+                <canvas id="myChart" aria-live="polite"></canvas>
             </p>
             <figcaption>Spending chart based on your personal budget data.</figcaption>
         </figure>
         </article>
 
-        <article>
+        <article class = "full-width-article">
             <figure>
             <h1>D3JS Chart</h1>
             <div class="d3-chart-container">
